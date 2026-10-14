@@ -1,0 +1,16 @@
+{
+  "_comment": "Package names shown in the playground's code panel. The API shown is illustrative: it mirrors the patterns of the SDK work, not the exact published surface.",
+  "packages": {
+    "react": "@thunderid/react",
+    "nextjs": "@thunderid/nextjs",
+    "vue": "@thunderid/vue",
+    "nuxt": "@thunderid/nuxt",
+    "express": "@thunderid/express"
+  },
+  "mockUser": {
+    "givenName": "Ada",
+    "familyName": "Perera",
+    "email": "ada@example.com",
+    "username": "ada.perera"
+  }
+}
