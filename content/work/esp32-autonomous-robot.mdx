@@ -1,0 +1,109 @@
+export const meta = {
+  slug: "esp32-autonomous-robot",
+  order: 2,
+  kicker: "Embedded · Robotics",
+  title: "An ESP32-S3 robot that is not allowed to reverse",
+  summary:
+    "Autonomous firmware with obstacle avoidance, cliff detection, gyroscope-based rotation and turbo/eco vacuum modes, built around a hard rule: the robot never moves backwards.",
+  role: "Firmware, sensor integration, behaviour design",
+  period: "[YEAR]",
+  stack: ["ESP32-S3", "Firmware", "Gyroscope / IMU", "Distance sensors", "Cliff sensors", "PWM motor control"],
+  tldr: [
+    "Every escape manoeuvre is a turn in place plus forward motion. Reverse doesn't exist in the state machine.",
+    "Gyro-closed-loop rotation, so a 120° turn is 120° on carpet and on tile.",
+    "Cliff detection takes priority over everything, including the obstacle logic.",
+  ],
+  links: [
+    { label: "Firmware source", href: "https://github.com/janithjay" },
+    { label: "Run the simulator", href: "#demo" },
+  ],
+  demo: "robot",
+}
+
+## Problem
+
+A small cleaning robot has to cover a floor on its own: avoid furniture, never fall down stairs, and keep moving. The usual escape move, backing up, was ruled out. [ADD THE REASON: e.g. no rear sensors, so reversing is driving blind; or the brush and vacuum geometry only work moving forward.] So the firmware had to get out of every situation using only rotation and forward motion.
+
+## Constraints
+
+- **No backward movement, ever.** It isn't a preference. Reverse isn't a valid motor command in the firmware.
+- **Falls are unrecoverable.** A missed cliff ends the run (and maybe the robot), so cliff checks must win over every other behaviour.
+- **Rotation must be accurate without wheel encoders doing all the work.** Wheel slip on different floors makes timed turns unreliable.
+- **Power budget.** The vacuum has turbo and eco modes that trade suction for battery life, and the motion logic has to work in both.
+- **Microcontroller resources.** Everything runs on an ESP32-S3: [ADD: RTOS tasks or a superloop, sensor polling rates].
+
+## My role
+
+I wrote the firmware: sensor integration, the behaviour state machine, gyro-based rotation, and the vacuum mode logic. [ADD: hardware you built or wired, team members if any.]
+
+## Approach
+
+<RobotStateDiagram />
+
+The firmware is a small state machine with a strict priority order:
+
+1. **Cliff check first, every tick.** If a downward-facing cliff sensor loses the floor, motors stop immediately, before any other logic runs.
+2. **Obstacle check.** If the forward distance reading drops below the threshold, the robot stops.
+3. **Rotate in place, closed-loop on the gyro.** The robot spins until the integrated gyroscope heading reaches the target angle, not for a fixed time. It picks the direction based on [ADD: the side sensor readings, alternation, or randomisation].
+4. **Re-check, then drive forward.** It only moves again once the path ahead is clear and the floor is present. Otherwise it keeps rotating.
+
+There is no `REVERSE` state. Removing it from the state machine is what makes the constraint enforceable: no code path can produce it.
+
+<Deep>
+
+### Gyro-closed-loop rotation
+
+Timed turns ("spin for 400 ms") drift with battery voltage and floor friction. Instead, rotation integrates the gyroscope's yaw rate and stops at the target heading, slowing near the target to avoid overshoot.
+
+```cpp
+// Illustrative: rotate in place until the integrated yaw reaches the target.
+void rotateBy(float targetDeg) {
+  float yaw = 0;
+  uint32_t last = micros();
+  while (fabs(yaw) < fabs(targetDeg)) {
+    if (cliffDetected()) { stopMotors(); return; }   // cliffs still win
+    uint32_t now = micros();
+    yaw += gyroZ() * (now - last) / 1e6f;           // deg/s * s
+    last = now;
+    float remaining = fabs(targetDeg) - fabs(yaw);
+    spinInPlace(sign(targetDeg), remaining < 15 ? SLOW : NORMAL);
+  }
+  stopMotors();
+}
+```
+
+[REPLACE with your real implementation details: gyro part, filtering, bias calibration at boot.]
+
+### Turbo and eco
+
+Turbo raises suction (and power draw). Eco lowers both suction and drive speed. [ADD: what each mode changes, such as PWM duty cycles and speed limits, and how the mode is selected.]
+
+</Deep>
+
+## Interactive demo
+
+A 2D simulation of the behaviour. Click or tap the floor to place obstacles. The dark area at the edges is a drop, so watch the cliff sensors catch it. The counter on the right tracks reverse moves, and it stays at zero.
+
+<RobotDemo />
+
+The simulator approximates the firmware's logic (sensor ranges and angles are illustrative), but the priority order and the no-reverse rule are the same.
+
+## Results
+
+- **0 reverse moves**, by construction.
+- **[METRIC]** minutes of continuous autonomous running without a fall.
+- **[METRIC]** rotation accuracy (e.g. ±N° over a 90° turn) with gyro-closed-loop turns.
+- **[METRIC]** battery life in eco mode vs turbo.
+
+## What went wrong
+
+[REPLACE WITH YOUR REAL STORY.] Candidates worth writing up: corners where alternating left and right turns made the robot oscillate, gyro drift or bias at boot, or a cliff sensor that misread dark floors as drops. Explain what you saw, how you diagnosed it, and the change that fixed it.
+
+## Stack
+
+ESP32-S3 · firmware ([ADD: Arduino / ESP-IDF / PlatformIO]) · gyroscope / IMU · distance sensors · cliff sensors · PWM motor drivers
+
+## Links
+
+- [Source code](https://github.com/janithjay) · [ADD REPO LINK]
+- [ADD: video of the robot running]

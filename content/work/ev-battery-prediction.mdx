@@ -1,0 +1,65 @@
+export const meta = {
+  slug: "ev-battery-prediction",
+  order: 4,
+  kicker: "ML · Deployed model",
+  title: "EV battery prediction, deployed on Hugging Face",
+  summary:
+    "A model that predicts [TARGET, e.g. state of health] for EV batteries from usage data, deployed as a public Hugging Face Space you can try.",
+  role: "Data, model, deployment",
+  period: "[YEAR]",
+  stack: ["Python", "[ML FRAMEWORK]", "Hugging Face Spaces", "[UI: Gradio / Streamlit]"],
+  tldr: [
+    "Predicts [TARGET] from [INPUT FEATURES].",
+    "Deployed as a Hugging Face Space so anyone can run it. No notebook required.",
+    "[METRIC] error on held-out data.",
+  ],
+  links: [{ label: "Hugging Face Space", href: "[HF_SPACE_URL]" }],
+  demo: "battery",
+  hfSpace: "",
+}
+
+## Problem
+
+[ONE PARAGRAPH: why predicting this battery property matters (range anxiety, maintenance, second-life use) and who would use the prediction.]
+
+## Constraints
+
+- **[DATA]:** [dataset source, size, and what was missing or noisy].
+- **Interpretability:** predictions need to be explainable enough to trust.
+- **Runs in a browser tab:** deployment had to be free and public, hence a Hugging Face Space.
+
+## My role
+
+[ADD: what you did yourself, from data cleaning to feature engineering, model selection and deployment.]
+
+## Approach
+
+<BatteryPipelineDiagram />
+
+1. **Data.** [Source and preprocessing.]
+2. **Features.** [Engineered features, e.g. cycle count, depth of discharge, temperature.]
+3. **Model.** [Model type and why it was chosen over alternatives.]
+4. **Deployment.** Packaged as a Hugging Face Space with [Gradio / Streamlit].
+
+## Interactive demo
+
+The widget below is an **illustrative capacity-fade curve** that shows the kind of relationship the model learns. It is not the trained model. The real model runs in the Hugging Face Space, which loads on click so it doesn't slow this page down.
+
+<BatteryDemo hfSpace={meta.hfSpace} />
+
+## Results
+
+- **[METRIC]** (e.g. MAE / RMSE / R²) on held-out data.
+- Public Space with **[METRIC]** runs, if you track it.
+
+## What went wrong
+
+[REPLACE WITH YOUR REAL STORY.] Good candidates: data leakage between train and test cells, a feature that only worked on one chemistry, or a Space that timed out on cold start.
+
+## Stack
+
+Python · [ML FRAMEWORK] · Hugging Face Spaces
+
+## Links
+
+- Hugging Face Space: [HF_SPACE_URL]

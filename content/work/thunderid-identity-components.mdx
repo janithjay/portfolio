@@ -1,0 +1,103 @@
+export const meta = {
+  slug: "thunderid-identity-components",
+  order: 1,
+  kicker: "Identity · WSO2",
+  title: "Self-service identity components for ThunderID",
+  summary:
+    "Reusable, composable, themeable profile and account components shipped across the React, Next.js, Vue, Nuxt and Express SDKs, backed by contributions to the ThunderID Go backend.",
+  role: "Software Engineering Intern, SDK and backend contributor",
+  period: "[START] to present",
+  stack: ["TypeScript", "React", "Next.js", "Vue", "Nuxt", "Express", "Go", "Design tokens"],
+  tldr: [
+    "One component contract implemented across five SDKs, so a profile screen behaves the same in React and in Nuxt.",
+    "Theming through tokens (colour, radius, type, density) instead of CSS overrides, so integrators can rebrand without forking.",
+    "Go backend contributions behind the self-service APIs the components call. [METRIC] merged PRs.",
+  ],
+  links: [
+    { label: "Merged PRs on GitHub", href: "https://github.com/janithjay" },
+    { label: "Try the playground", href: "/#playground" },
+  ],
+  demo: "playground",
+}
+
+## Problem
+
+Every app that adds sign-in eventually needs the screens *after* sign-in: view and edit your profile, change your password, manage your account. Developers usually build these from scratch, once per framework, and they drift out of sync with the identity backend.
+
+ThunderID ships SDKs for React, Next.js, Vue, Nuxt and Express. The goal of the self-service work is that a developer can drop in a component, get a working profile flow, and make it look like *their* product rather than ours.
+
+## Constraints
+
+- **Five frameworks, one behaviour.** A component has to feel native in React and in Vue, render correctly under Next.js and Nuxt server rendering, and have an Express story for server-rendered apps, without five diverging implementations.
+- **Themeable without forking.** Integrators need to change colour, radius, typography and density. If the only way is to override internal class names, every SDK release breaks someone's styles.
+- **Composable.** Some teams want the full drop-in component, others want the parts (a field, a section, a hook) to build their own layout.
+- **Accessible by default.** These components become someone else's product, so keyboard and screen-reader support can't be optional.
+- **Lives in a monorepo.** Changes go through review with other SDK maintainers, so small, well-scoped PRs matter.
+
+## My role
+
+I built self-service identity components across the React, Next.js, Vue, Nuxt and Express SDKs, and contributed to the ThunderID Go backend and the JavaScript SDK monorepo. [ADD: specific components you owned, reviewers or teams you worked with, scope of backend changes.]
+
+## Approach
+
+<ThunderArchitectureDiagram />
+
+The architecture separates **what the component does** from **how a framework renders it**:
+
+1. **Shared logic in the core.** Data fetching, validation and state transitions for a self-service flow live in framework-agnostic code. Every SDK runs the same rules.
+2. **Thin framework bindings.** Each SDK exposes the flow in that framework's idiom: components and hooks in React, components and composables in Vue, server-aware wrappers for Next.js and Nuxt.
+3. **A theme contract, not a stylesheet.** Components read design tokens exposed as CSS custom properties. An integrator sets tokens once on the provider and every component follows.
+4. **Composition over configuration.** The drop-in component is built out of the same smaller parts that are exported for custom layouts.
+
+<Deep>
+
+### Why tokens instead of a `className` escape hatch
+
+Class-name overrides couple the integrator to the component's DOM. Rename a wrapper and their styles silently break. Tokens are a public API: `--radius` means the same thing in every component and every framework, and they can be versioned like any other API.
+
+The playground below runs on the same idea. The theme editor writes tokens, and the component only reads them. The site you're reading uses the same token system, so you can apply your theme to the whole page.
+
+```tsx
+// The integrator's whole theming surface: tokens on the provider.
+<IdentityProvider
+  theme={{
+    colors: { primary: "#3DFFA2" },
+    radius: 10,
+    typography: { fontFamily: "Inter" },
+    density: "comfortable",
+  }}
+>
+  <UserProfile />
+</IdentityProvider>
+```
+
+### Keeping five SDKs honest
+
+The risk with five SDKs is behaviour drift: a field validates in React but not in Vue. Keeping validation and state in shared code means a fix lands once. Framework packages only translate events and render output. [ADD: how this was tested, e.g. shared test fixtures, Storybook, visual regression.]
+
+</Deep>
+
+## Interactive demo
+
+A working profile component in the style of my SDK work. Sign in with any email (mock auth, nothing leaves your browser), edit the theme, and switch frameworks to see the equivalent integration code.
+
+<PlaygroundDemo />
+
+## Results
+
+- Self-service components available across **5 SDKs**: React, Next.js, Vue, Nuxt, Express.
+- **[METRIC]** merged PRs across the Go backend and the JavaScript SDK monorepo.
+- **[METRIC]** components or screens shipped. **[METRIC]** adoption or usage, if public.
+
+## What went wrong
+
+[REPLACE WITH YOUR REAL STORY.] A prompt to get you started: what broke when a component worked in one framework but not another? Common culprits are server rendering differences between Next.js and Nuxt, hydration mismatches when the theme depends on client-only state, and token names that leaked framework assumptions. Write down what happened, how you found it, and what you changed so it couldn't happen again.
+
+## Stack
+
+TypeScript · React · Next.js · Vue · Nuxt · Express · Go · CSS custom properties as design tokens · monorepo tooling
+
+## Links
+
+- [My merged PRs on GitHub](https://github.com/janithjay) · [ADD direct PR links]
+- [Try the playground on the home page](/#playground)

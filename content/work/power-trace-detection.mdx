@@ -1,0 +1,93 @@
+export const meta = {
+  slug: "power-trace-detection",
+  order: 3,
+  kicker: "ML · Final-year project",
+  title: "Power-trace detection, and the bug that moved the goalposts",
+  summary:
+    "My final-year project: detecting events in power traces. The most useful thing I learned came from a bug where calibration silently overwrote the configured detection threshold.",
+  role: "Final-year project: pipeline, model and evaluation",
+  period: "[YEAR]",
+  stack: ["Python", "[ML FRAMEWORK]", "Signal processing", "[TOOLS]"],
+  tldr: [
+    "A detection pipeline over power traces: windowing, calibration, thresholding, then classification. [FYP SUMMARY]",
+    "Found a threshold-overwrite bug where calibration replaced the configured threshold, so tuning appeared to do nothing.",
+    "Fixed it by separating the learned baseline from the user threshold. Drag the slider in the demo to see both behaviours.",
+  ],
+  links: [{ label: "Project repository", href: "https://github.com/janithjay" }],
+  demo: "power-trace",
+}
+
+## Problem
+
+[FYP TITLE]. [ONE PARAGRAPH: what the power traces come from, what counts as an "event", and why detecting it matters.]
+
+## Constraints
+
+- **Noisy signals.** Power traces drift with load and temperature, so a fixed absolute threshold doesn't hold up.
+- **Configurable sensitivity.** The threshold has to be tunable, because the trade-off between missed events and false alarms depends on how the system is used.
+- **[ADD: real-time or offline, hardware limits, dataset size.]**
+
+## My role
+
+[ADD: what you built yourself (data collection, preprocessing, model, evaluation), and who supervised or collaborated.]
+
+## Approach
+
+<PowerTraceDiagram />
+
+1. **Windowing.** The trace is split into windows.
+2. **Calibration.** A baseline (the noise floor) is learned from a calibration window.
+3. **Thresholding.** Samples that rise above the baseline plus a configured margin become candidate detections.
+4. **Classification.** Candidates are passed to the model. [ADD: model type and features.]
+
+## The bug
+
+During tuning, changing the threshold stopped changing the results. The cause: the calibration step wrote its computed value into the **same** config field as the user's threshold. After the first calibration window, the configured threshold was gone, silently replaced, and every later run used the calibrated value instead.
+
+```diff
+- # calibration "helpfully" stores its result in the shared config
+- config.threshold = baseline + k * noise_std
++ # calibration owns the baseline; the user owns the margin
++ state.baseline = baseline
++ effective = state.baseline + config.threshold_margin
+```
+
+[VERIFY: replace this sketch with your real code and the real fix.]
+
+## Interactive demo
+
+The chart below is **illustrative synthetic data**, not my dataset. Drag the threshold and watch the detections change. Then turn on "Reproduce bug": after calibration, the line you're dragging no longer controls anything.
+
+<PowerTraceDemo />
+
+<Deep>
+
+### Why it hid so well
+
+The bug produced plausible output. Detections still happened, just at a threshold nobody chose. With no error and no crash, the only symptom was "tuning has no effect", which is easy to blame on the data.
+
+### What the fix changed
+
+- Calibration state and user configuration live in separate objects, and calibration can't write to config at all.
+- The effective threshold is computed, never stored, so there's one source of truth.
+- A regression test sets a threshold, runs calibration, and asserts the configured value is unchanged.
+
+</Deep>
+
+## Results
+
+- **[METRIC]** detection accuracy / F1 on [DATASET].
+- **[METRIC]** false-positive rate at the chosen threshold.
+- Threshold tuning works again: the configured value is respected after calibration, and a test guards it.
+
+## What went wrong
+
+The threshold-overwrite bug above. The lesson I keep: when a parameter "has no effect", check whether something else is writing to it before assuming the model doesn't care. [ADD: anything else, such as data issues or evaluation mistakes.]
+
+## Stack
+
+Python · [ML FRAMEWORK] · [SIGNAL PROCESSING LIBS] · [PLOTTING]
+
+## Links
+
+- [Repository](https://github.com/janithjay) · [ADD REPO / THESIS LINK]
