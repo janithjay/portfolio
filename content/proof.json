@@ -1,0 +1,21 @@
+{
+  "_comment": "Curated proof shown when live GitHub data is unavailable. repoFilter: optional list of 'owner/repo' to limit live PRs to (empty = all public merged PRs by githubUser). Fill 'curated' with real merged PR URLs; entries without a url are hidden.",
+  "githubUser": "janithjay",
+  "curated": [
+    {
+      "title": "[PR TITLE: self-service profile component]",
+      "repo": "[org/repo]",
+      "url": "",
+      "kind": "pr",
+      "merged": true
+    },
+    {
+      "title": "[PR TITLE: Go backend change]",
+      "repo": "[org/repo]",
+      "url": "",
+      "kind": "pr",
+      "merged": true
+    }
+  ],
+  "repoFilter": []
+}
