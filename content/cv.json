@@ -1,0 +1,52 @@
+{
+  "name": "Janith Jayashan",
+  "headline": "Software Engineer: identity SDKs, Go services, ML and embedded systems",
+  "location": "Sri Lanka · open to remote or relocation",
+  "contact": {
+    "email": "janithjayashan018@gmail.com",
+    "github": "github.com/janithjay",
+    "linkedin": "linkedin.com/in/janithjayashan"
+  },
+  "summary": "Final-year Computer Engineering student and Software Engineering Intern at WSO2. I build reusable, composable, themeable self-service identity components for ThunderID across the React, Next.js, Vue, Nuxt and Express SDKs, and contribute to the ThunderID Go backend and the JavaScript SDK monorepo. Outside identity I work on ML models and embedded robotics.",
+  "experience": [
+    {
+      "role": "Software Engineering Intern",
+      "org": "WSO2",
+      "period": "[START] to present",
+      "location": "[LOCATION]",
+      "bullets": [
+        "Built reusable, composable self-service identity components for ThunderID across React, Next.js, Vue, Nuxt and Express SDKs, sharing one theming contract.",
+        "Contributed to the ThunderID Go backend and the JavaScript SDK monorepo ([METRIC] merged PRs).",
+        "Designed components to be themeable through design tokens (colour, radius, typography, density) so integrators can match their brand without forking."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BSc (Hons) in Computer Engineering",
+      "org": "General Sir John Kotelawala Defence University",
+      "period": "[START YEAR] to [2027]",
+      "detail": "Final year. Final-year project: [FYP TITLE]."
+    }
+  ],
+  "projects": [
+    {
+      "name": "ESP32-S3 autonomous robot",
+      "detail": "Firmware with obstacle avoidance, cliff detection, gyroscope-based rotation, turbo/eco vacuum modes, and a strict no-backward-movement constraint."
+    },
+    {
+      "name": "Power-trace detection (final-year project)",
+      "detail": "Detection pipeline over power traces. Found and fixed a threshold-overwrite bug that silently replaced the configured threshold. [METRIC]."
+    },
+    {
+      "name": "EV battery prediction model",
+      "detail": "Model predicting [TARGET, e.g. state of health], deployed as a Hugging Face Space. [METRIC]."
+    }
+  ],
+  "skills": [
+    { "group": "Languages", "items": ["TypeScript", "JavaScript", "Go", "Python", "C/C++ [VERIFY]"] },
+    { "group": "Frameworks", "items": ["React", "Next.js", "Vue", "Nuxt", "Express"] },
+    { "group": "ML", "items": ["[ML FRAMEWORK]", "Hugging Face"] },
+    { "group": "Embedded", "items": ["ESP32-S3", "IMU / gyroscope", "Sensor integration"] }
+  ]
+}
