@@ -1,0 +1,56 @@
+{
+  "name": "Janith Jayashan",
+  "handle": "JJay",
+  "role": "Software Engineering Intern at WSO2",
+  "education": "BSc (Hons) Computer Engineering, General Sir John Kotelawala Defence University (final year)",
+  "location": "Sri Lanka",
+  "positioning": "I build the identity layer developers drop into their apps, and the systems underneath it: Go services, ML models, and a robot that refuses to reverse.",
+  "positioningShort": "I build the identity layer developers drop into their apps, and the systems underneath it.",
+  "availability": {
+    "status": "open",
+    "label": "Open to SWE roles from [2027]",
+    "detail": "Platform / identity and full-stack. Remote, relocation, or on-site in Sri Lanka."
+  },
+  "email": "janithjayashan018@gmail.com",
+  "links": {
+    "github": "https://github.com/janithjay",
+    "linkedin": "https://www.linkedin.com/in/janithjayashan/",
+    "cvPdf": "/cv/janith-jayashan-cv.pdf"
+  },
+  "achievements": [
+    {
+      "kicker": "Identity / WSO2",
+      "title": "Self-service identity components across five SDKs",
+      "body": "Reusable, themeable profile and account components for ThunderID in React, Next.js, Vue, Nuxt and Express, plus Go backend work behind them.",
+      "metric": "[METRIC] merged PRs",
+      "href": "/work/thunderid-identity-components"
+    },
+    {
+      "kicker": "Embedded / Robotics",
+      "title": "An autonomous ESP32-S3 robot that never reverses",
+      "body": "Obstacle avoidance, cliff detection and gyro-closed-loop turns, all under a hard no-backward-movement rule.",
+      "metric": "0 reverse moves by design",
+      "href": "/work/esp32-autonomous-robot"
+    },
+    {
+      "kicker": "ML / Final-year project",
+      "title": "Power-trace detection, and the bug that silently moved the goalposts",
+      "body": "A detection pipeline over power traces, where I tracked down a threshold-overwrite bug and fixed it at the source.",
+      "metric": "[METRIC] detection accuracy",
+      "href": "/work/power-trace-detection"
+    }
+  ],
+  "stack": [
+    { "group": "Product & SDKs", "items": ["TypeScript", "React", "Next.js", "Vue", "Nuxt", "Express"] },
+    { "group": "Backend", "items": ["Go", "REST APIs", "Monorepos"] },
+    { "group": "ML", "items": ["Python", "Hugging Face", "[ML FRAMEWORK]"] },
+    { "group": "Embedded", "items": ["ESP32-S3", "Firmware", "IMU / gyroscope", "Sensor fusion"] }
+  ],
+  "nav": [
+    { "label": "Work", "href": "/work" },
+    { "label": "Playground", "href": "/#playground" },
+    { "label": "About", "href": "/about" },
+    { "label": "Now", "href": "/now" },
+    { "label": "CV", "href": "/cv" }
+  ]
+}
