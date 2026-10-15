@@ -21,7 +21,7 @@ export function ModeSwitch({ compact = false }: { compact?: boolean }) {
     <div
       role="radiogroup"
       aria-label="Reading mode"
-      className="js-only relative inline-flex items-center rounded-full border border-line bg-bg-elev p-0.5 font-mono text-[0.75rem]"
+      className="js-only relative inline-flex items-center rounded-[var(--radius)] border border-line bg-bg-elev p-0.5 font-mono text-[0.75rem]"
     >
       {OPTIONS.map((o) => {
         const active = mode === o.value;
@@ -33,7 +33,7 @@ export function ModeSwitch({ compact = false }: { compact?: boolean }) {
             aria-checked={active}
             title={o.hint}
             onClick={() => setMode(o.value)}
-            className={`relative min-h-9 rounded-full px-3 uppercase tracking-[0.08em] transition-colors ${
+            className={`relative min-h-9 rounded-[var(--radius)] px-3 uppercase tracking-[0.08em] transition-colors ${
               active ? "bg-text text-bg" : "text-muted hover:text-text"
             } ${compact ? "px-2.5" : ""}`}
           >

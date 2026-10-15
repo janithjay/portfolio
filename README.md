@@ -4,6 +4,7 @@ Portfolio of Janith Jayashan (JJay): identity SDK components, Go, ML and embedde
 
 The idea is **proof, not claims**: every claim on the site comes with something you can run, drag, or click. The site is built on its own design-token system, the same way the identity components it shows are.
 
+- **The stack, in 3D.** The Deep-mode hero is an exploded view of what I build (interface → identity APIs → models → firmware) rendered with three.js. Scrolling explodes the stack, each chapter lights up its layer, packets of data rise through it, and you can click a plate to open its case study. It starts as a pure-CSS 3D version (which also works without JavaScript) and upgrades to WebGL on first interaction, so three.js never sits on the critical path.
 - **Two reading modes.** *Skim* is the 30-second recruiter version. *Deep* has the case studies, diagrams, code and trade-offs. The choice is remembered per visitor and lives in the URL (`?mode=skim`), so it can be shared.
 - **Identity component playground.** A working sign-in and profile flow (mock auth only) with a live theme editor, a WCAG contrast check, and a framework switcher (React, Next.js, Vue, Nuxt, Express). *Apply to this site* re-themes the whole page.
 - **Interactive demos.** A threshold lab that reproduces the final-year project's threshold-overwrite bug, a 2D simulator of the ESP32-S3 robot (click to place obstacles; reverse moves stay at 0), and an EV battery capacity explorer with a click-to-load Hugging Face Space.
@@ -13,7 +14,7 @@ The idea is **proof, not claims**: every claim on the site comes with something 
 
 ## Stack
 
-Next.js 16 (App Router, Turbopack) · React 19 · TypeScript (strict) · Tailwind CSS v4 on CSS-variable tokens · MDX (`@next/mdx`) · cmdk + Radix Dialog (both lazy-loaded) · hand-rolled SVG charts and Canvas · sugar-high (highlighting at build time) · Vercel Analytics.
+Next.js 16 (App Router, Turbopack) · React 19 · TypeScript (strict) · three.js (lazy) · Tailwind CSS v4 on CSS-variable tokens · MDX (`@next/mdx`) · cmdk + Radix Dialog (both lazy-loaded) · hand-rolled SVG charts and Canvas · sugar-high (highlighting at build time) · Vercel Analytics.
 
 ## Getting started
 
@@ -41,7 +42,8 @@ app/                    routes: / · /work · /work/[slug] · /about · /now · 
   globals.css           design tokens (light + dark), base styles, motion, print
   */opengraph-image.tsx generated Open Graph images (lib/og.tsx)
 components/
-  home/                 hero, sections, proof strip
+  stack/                3D stack: three.js scene, plate artwork, CSS-3D fallback, scroll story
+  home/                 skim hero, sections, proof strip
   playground/           identity playground (lazy) + static fallback
   demos/                threshold lab, robot sim, battery widget + lazy loaders
   diagrams/             themeable SVG architecture diagrams
@@ -102,10 +104,10 @@ Tokens are CSS custom properties defined once in `app/globals.css`. Light values
 | --- | --- |
 | `--bg`, `--bg-elev`, `--surface`, `--surface-2` | Page and card surfaces |
 | `--text`, `--text-muted`, `--line`, `--line-strong` | Text and hairlines |
-| `--accent` | Signal green, used for fills (buttons, dots) |
+| `--accent` | Acid lime, used for fills (buttons, dots, 3D highlights) |
 | `--accent-ink` | Accent for text and links. Contrast-corrected per scheme (≥ 5:1) |
 | `--on-accent` | Text on accent fills |
-| `--warm`, `--warm-ink` | Amber secondary (fill / text) |
+| `--warm`, `--warm-ink` | Hot orange secondary (fill / text) |
 | `--radius`, `--font-heading`, `--heading-weight`, `--heading-tracking`, `--density` | Shape, type and spacing knobs (the same ones the playground edits) |
 | `--step--1` … `--step-6` | Fluid type scale (`clamp()`, 320 → 1440 px) |
 
@@ -114,6 +116,10 @@ To change the default brand:
 1. Edit the values in `app/globals.css`, in **both** the light block and the two dark blocks.
 2. Mirror the surface colours in `SCHEME_SURFACES` and the defaults in `DEFAULT_TOKENS`, both in `lib/theme.ts`. The playground and the contrast-correction logic use them.
 3. Run `npm run audit` to confirm contrast in both themes.
+
+Fonts: **Bricolage Grotesque** (condensed display), **Hanken Grotesk** (body) and **Martian Mono** (labels and code), all self-hosted from `app/fonts/`, instanced to the weights used and subset to Latin (about 74 KB in total). To swap a font, replace the file and update the matching `localFont()` call in `app/layout.tsx`.
+
+The 3D scene reads its colours from the same tokens at runtime and redraws when the theme changes, so a new palette needs no changes in `components/stack/`.
 
 When a visitor clicks *Apply to this site*, `lib/theme.ts › tokensToCss()` serialises their tokens to a small stylesheet. It's stored in `localStorage` and injected before first paint by `components/site/ThemeScript.tsx`, so there's no flash.
 
@@ -147,12 +153,12 @@ Requests are rate-limited per IP (best effort, per instance). Questions are capp
 
 | | Performance | Accessibility | Best practices | SEO |
 | --- | --- | --- | --- | --- |
-| Mobile (`/`, case studies, `/cv`) | 96–98 | 100 | 100 | 100 |
+| Mobile (`/`, case studies, `/cv`) | 96–99 | 100 | 100 | 100 |
 | Desktop | 100 | 100 | 100 | 100 |
 
 - **axe-core:** 0 violations across 10 pages × light/dark × Skim/Deep, with demos hydrated.
 - **CLS:** 0.000.
-- **Lab LCP (simulated slow 4G):** 2.3–2.8 s. Observed LCP on the unthrottled local run was about 0.2 s. Confirm field Core Web Vitals in Vercel Speed Insights after launch.
-- **Home-page JavaScript:** about 146 KB gzipped. Of that, about 128 KB is the React 19 + Next.js 16 runtime and about 18 KB is site code. Demos, the palette and the assistant load on demand.
+- **Lab LCP (simulated slow 4G):** 2.0–2.7 s. Observed LCP on the unthrottled local run was about 0.2 s. Confirm field Core Web Vitals in Vercel Speed Insights after launch.
+- **Home-page JavaScript:** about 148 KB gzipped. Of that, about 128 KB is the React 19 + Next.js 16 runtime and about 20 KB is site code. three.js (about 143 KB gzipped), the demos, the palette and the assistant load on demand.
 
 Lab numbers come from Lighthouse 13 against `next start` on a single machine. Expect some variance on real devices.

@@ -91,6 +91,6 @@ export function ensureContrast(fg: string, bg: string, target = 4.5): string {
 }
 
 /** Pick the text colour (near-black or white) that reads best on a fill. */
-export function onColor(fill: string, dark = "#05110B", light = "#FFFFFF"): string {
+export function onColor(fill: string, dark = "#0B0F00", light = "#FFFFFF"): string {
   return contrast(fill, dark) >= contrast(fill, light) ? dark : light;
 }

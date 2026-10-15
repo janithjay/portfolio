@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/Hero";
+import { StackStory } from "@/components/stack/StackStory";
 import { ProofStrip } from "@/components/home/ProofStrip";
 import { AboutTeaser, Contact, DemosTeaser, FeaturedWork, PlaygroundSection, SkimWork } from "@/components/home/Sections";
 import { getProof } from "@/lib/github";
@@ -10,6 +11,7 @@ export default async function Home() {
   const [work, proof] = await Promise.all([allWork(), getProof()]);
   return (
     <>
+      <StackStory />
       <Hero />
       <SkimWork work={work} />
       <div className="deep-only">

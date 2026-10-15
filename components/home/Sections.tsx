@@ -9,15 +9,21 @@ import { AskButton } from "@/components/palette/Overlays";
 import { CopyEmail } from "./CopyEmail";
 
 export function SectionHead({ n, title, id, children }: { n: string; title: string; id: string; children?: React.ReactNode }) {
+  const [num, ...label] = n.split(" · ");
   return (
-    <div className="grid gap-4 border-b border-line pb-5 md:grid-cols-12 md:items-end">
-      <div className="md:col-span-7">
-        <p className="eyebrow">{n}</p>
-        <h2 id={id} className="mt-2 text-step-4">
+    <div className="title-block">
+      <div className="title-block__meta hud">
+        <span>
+          <span className="text-accent-ink">{num}</span> / {label.join(" · ")}
+        </span>
+        <span aria-hidden="true">jj—sheet {num}/06</span>
+      </div>
+      <div className="grid gap-5 pt-6 md:grid-cols-12 md:items-end">
+        <h2 id={id} className="text-step-5 md:col-span-8">
           {title}
         </h2>
+        {children && <div className="text-muted md:col-span-4 md:pb-2">{children}</div>}
       </div>
-      {children && <div className="text-muted md:col-span-5 md:justify-self-end md:text-right">{children}</div>}
     </div>
   );
 }
@@ -32,7 +38,7 @@ const DEMO_LABEL: Record<WorkMeta["demo"], string> = {
 export function FeaturedWork({ work }: { work: WorkMeta[] }) {
   return (
     <section aria-labelledby="work-title" className="container-x pt-[var(--space-section)]">
-      <SectionHead n="01 · Selected work" title="Case studies, with something to poke at" id="work-title">
+      <SectionHead n="01 · Index of work" title="Case studies, each with something to poke at" id="work-title">
         <p>
           Every project has an interactive demo and an honest &ldquo;what went wrong&rdquo;.
         </p>
@@ -43,13 +49,15 @@ export function FeaturedWork({ work }: { work: WorkMeta[] }) {
             <Link
               href={`/work/${w.slug}`}
               transitionTypes={["nav-forward"]}
-              className="group grid gap-x-8 gap-y-3 py-8 md:grid-cols-12 md:py-10"
+              className="work-row group grid gap-x-8 gap-y-3 py-8 md:grid-cols-12 md:py-10"
             >
-              <span className="font-mono text-sm text-muted md:col-span-1">0{i + 1}</span>
+              <span className="font-display text-step-4 font-extrabold leading-none text-muted transition-colors group-hover:text-accent-ink md:col-span-1">
+                0{i + 1}
+              </span>
               <span className="md:col-span-7">
                 <span className="eyebrow block">{w.kicker}</span>
                 <ViewTransition name={`work-title-${w.slug}`} share="morph" default="none">
-                  <span className="heading mt-2 block text-step-3 transition-colors group-hover:text-accent-ink">{w.title}</span>
+                  <span className="heading mt-2 block text-step-4 transition-transform duration-300 group-hover:translate-x-2">{w.title}</span>
                 </ViewTransition>
                 <span className="deep-only mt-3 block max-w-[60ch] text-muted">
                   <T>{w.summary}</T>
@@ -209,11 +217,11 @@ export function AboutTeaser() {
 export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="container-x scroll-mt-20 pt-[var(--space-section)] skim:pt-12">
-      <div className="card relative overflow-hidden p-[calc(var(--space-card)*1.5)]">
+      <div className="card ticks relative overflow-hidden p-[calc(var(--space-card)*1.5)]">
         <div className="tech-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
         <div className="relative">
           <p className="eyebrow">06 · Contact</p>
-          <h2 id="contact-title" className="mt-2 max-w-[22ch] text-step-4">
+          <h2 id="contact-title" className="mt-2 max-w-[18ch] text-step-5">
             Hiring for platform, identity or full-stack?
           </h2>
           <p className="mt-3 max-w-[56ch] text-muted">

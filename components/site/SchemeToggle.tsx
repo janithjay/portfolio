@@ -14,7 +14,7 @@ export function SchemeToggle() {
     <button
       type="button"
       onClick={() => setScheme(NEXT[scheme])}
-      className="js-only inline-grid size-10 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-text"
+      className="js-only inline-grid size-10 place-items-center rounded-[var(--radius)] text-muted transition-colors hover:bg-surface-2 hover:text-text"
       aria-label={`Colour theme: ${scheme}. Switch to ${NEXT[scheme]}.`}
       title={`Theme: ${scheme}`}
     >

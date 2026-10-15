@@ -10,27 +10,26 @@ import { site, siteUrl } from "@/lib/site";
 import { allWork } from "@/lib/work";
 import "./globals.css";
 
-const inter = localFont({
-  src: "./fonts/inter-var.woff2",
-  variable: "--font-inter",
-  weight: "100 900",
-  // optional: on a slow first visit, keep the metric-matched fallback instead of swapping late (no LCP re-paint)
+const sans = localFont({
+  src: "./fonts/hanken.woff2",
+  variable: "--font-hanken",
+  weight: "300 700",
+  // optional: on a slow first visit keep the metric-matched fallback rather than re-painting late
   display: "optional",
 });
 
-const instrument = localFont({
-  src: [
-    { path: "./fonts/instrument-serif.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/instrument-serif-italic.woff2", weight: "400", style: "italic" },
-  ],
-  variable: "--font-instrument",
+const display = localFont({
+  src: "./fonts/bricolage.woff2",
+  variable: "--font-bricolage",
+  weight: "500 800",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 const mono = localFont({
-  src: "./fonts/jetbrains-mono.woff2",
-  variable: "--font-jetbrains",
-  weight: "400",
+  src: "./fonts/martian-mono.woff2",
+  variable: "--font-martian",
+  weight: "300 600",
   display: "optional",
   preload: false,
 });
@@ -58,8 +57,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f4ef" },
-    { media: "(prefers-color-scheme: dark)", color: "#070b14" },
+    { media: "(prefers-color-scheme: light)", color: "#eeede8" },
+    { media: "(prefers-color-scheme: dark)", color: "#06070b" },
   ],
   colorScheme: "light dark",
 };
@@ -108,7 +107,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang="en"
       data-mode="deep"
       suppressHydrationWarning
-      className={`${inter.variable} ${instrument.variable} ${mono.variable}`}
+      className={`${sans.variable} ${display.variable} ${mono.variable}`}
     >
       <head>
         <ThemeScript />

@@ -1,27 +1,22 @@
 import { site } from "@/lib/site";
 import type { ProofData } from "@/lib/github";
 import { Icon } from "@/components/ui/Icon";
+import { SectionHead } from "./Sections";
 
 const fmt = new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" });
 
 export function ProofStrip({ data }: { data: ProofData }) {
   return (
     <section id="proof" aria-labelledby="proof-title" className="container-x deep-only scroll-mt-24 pt-[var(--space-section)]">
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-4">
-        <div>
-          <p className="eyebrow">04 · Live proof</p>
-          <h2 id="proof-title" className="mt-2 text-step-3">
-            Recently merged
-          </h2>
-        </div>
-        <p className="font-mono text-xs text-muted">
+      <SectionHead n="04 · Live proof" title="Recently merged" id="proof-title">
+        <p className="font-mono text-xs">
           {data.source === "live"
             ? `${data.total ?? data.items.length} merged public PRs · from the GitHub API, refreshed every 6h`
             : data.source === "curated"
               ? "Hand-picked PRs (live GitHub feed unavailable right now)"
               : "Live feed unavailable right now"}
         </p>
-      </div>
+      </SectionHead>
       {data.items.length ? (
         <ul className="grid gap-px overflow-hidden border-b border-line sm:grid-cols-2 lg:grid-cols-3">
           {data.items.map((pr) => (

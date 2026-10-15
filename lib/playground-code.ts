@@ -11,9 +11,9 @@ export const FRAMEWORKS: { id: Framework; label: string; file: string }[] = [
 ];
 
 const FONT_NAME: Record<FontChoice, string> = {
-  editorial: "Instrument Serif",
-  grotesk: "Inter",
-  mono: "JetBrains Mono",
+  display: "Bricolage Grotesque",
+  grotesk: "Hanken Grotesk",
+  mono: "Martian Mono",
   system: "system-ui",
 };
 

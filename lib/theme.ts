@@ -7,7 +7,7 @@ import { contrast, ensureContrast, onColor } from "./color";
 
 export type Scheme = "light" | "dark";
 export type SchemePreference = Scheme | "system";
-export type FontChoice = "editorial" | "grotesk" | "mono" | "system";
+export type FontChoice = "display" | "grotesk" | "mono" | "system";
 export type Density = "compact" | "comfortable" | "spacious";
 
 export interface ThemeTokens {
@@ -18,30 +18,30 @@ export interface ThemeTokens {
 }
 
 export const DEFAULT_TOKENS: ThemeTokens = {
-  accent: "#3DFFA2",
-  radius: 10,
-  font: "editorial",
+  accent: "#C6F432",
+  radius: 6,
+  font: "display",
   density: "comfortable",
 };
 
 export const ACCENT_PRESETS = [
-  { name: "Signal", value: "#3DFFA2" },
-  { name: "Amber", value: "#FFB547" },
+  { name: "Acid", value: "#C6F432" },
+  { name: "Ember", value: "#FF6A2B" },
   { name: "Ion", value: "#5AB8FF" },
   { name: "Violet", value: "#A88BFF" },
-  { name: "Coral", value: "#FF7A6B" },
+  { name: "Signal", value: "#3DFFA2" },
 ] as const;
 
 /** Surface colours per scheme. Mirrors the defaults in app/globals.css. */
 export const SCHEME_SURFACES: Record<Scheme, { bg: string; surface: string; text: string; muted: string; line: string }> = {
-  dark: { bg: "#070B14", surface: "#0E1424", text: "#E8ECF4", muted: "#A0ABC0", line: "#1F2A42" },
-  light: { bg: "#F5F4EF", surface: "#FFFFFF", text: "#0A1020", muted: "#4A5468", line: "#D6D4CA" },
+  dark: { bg: "#06070B", surface: "#0F1219", text: "#ECEEF2", muted: "#9AA1B2", line: "#1D2230" },
+  light: { bg: "#EEEDE8", surface: "#FFFFFF", text: "#0A0B0F", muted: "#4B5162", line: "#D3D1C8" },
 };
 
 export const FONT_STACKS: Record<FontChoice, { heading: string; weight: string; tracking: string; label: string }> = {
-  editorial: { heading: "var(--font-serif)", weight: "400", tracking: "-0.01em", label: "Editorial serif" },
-  grotesk: { heading: "var(--font-sans)", weight: "650", tracking: "-0.035em", label: "Tight grotesk" },
-  mono: { heading: "var(--font-mono)", weight: "600", tracking: "-0.04em", label: "Mono" },
+  display: { heading: "var(--font-display)", weight: "760", tracking: "-0.025em", label: "Condensed display" },
+  grotesk: { heading: "var(--font-sans)", weight: "650", tracking: "-0.035em", label: "Grotesk" },
+  mono: { heading: "var(--font-mono)", weight: "500", tracking: "-0.05em", label: "Mono" },
   system: { heading: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", weight: "650", tracking: "-0.02em", label: "System UI" },
 };
 
@@ -61,7 +61,7 @@ export function accentVars(accent: string, scheme: Scheme): Record<string, strin
 
 /** Scheme-independent variables. */
 export function sharedVars(tokens: ThemeTokens): Record<string, string> {
-  const f = FONT_STACKS[tokens.font];
+  const f = FONT_STACKS[tokens.font] ?? FONT_STACKS.display; // tolerate tokens saved by older versions
   return {
     "--radius": `${tokens.radius}px`,
     "--font-heading": f.heading,
@@ -126,13 +126,13 @@ export function scopedVars(tokens: ThemeTokens, scheme: Scheme): Record<string, 
     "--bg": s.bg,
     "--bg-elev": s.surface,
     "--surface": s.surface,
-    "--surface-2": dark ? "#131B2E" : "#ECEBE4",
+    "--surface-2": dark ? "#151924" : "#E4E3DD",
     "--line": s.line,
-    "--line-strong": dark ? "#2F3D5C" : "#B9B6A8",
+    "--line-strong": dark ? "#2C3346" : "#B3B0A4",
     "--text": s.text,
     "--text-muted": s.muted,
     "--danger-ink": dark ? "#FF8A80" : "#B42318",
-    "--warm-ink": dark ? "#FFB547" : "#935800",
+    "--warm-ink": dark ? "#FF7A3D" : "#B53600",
     "--radius-sm": `calc(${tokens.radius}px * 0.6)`,
     "--radius-lg": `calc(${tokens.radius}px * 1.6)`,
     colorScheme: scheme,

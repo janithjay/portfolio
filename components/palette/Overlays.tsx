@@ -72,7 +72,7 @@ export function Overlays({ items }: { items: PaletteItem[] }) {
       {hint && (
         <div
           role="status"
-          className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full border border-line bg-bg-elev py-1.5 pl-4 pr-1.5 text-sm shadow-lg shadow-black/10"
+          className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-[var(--radius)] border border-line bg-bg-elev py-1.5 pl-4 pr-1.5 text-sm shadow-lg shadow-black/10"
         >
           <span>
             Tip: press <kbd className="kbd">⌘</kbd> <kbd className="kbd">K</kbd> or <kbd className="kbd">Ctrl</kbd>{" "}
@@ -84,7 +84,7 @@ export function Overlays({ items }: { items: PaletteItem[] }) {
           <button
             type="button"
             aria-label="Dismiss tip"
-            className="grid size-8 place-items-center rounded-full text-muted hover:text-text"
+            className="grid size-8 place-items-center rounded-[var(--radius)] text-muted hover:text-text"
             onClick={dismissHint}
           >
             <Icon name="close" size={16} />
@@ -120,7 +120,7 @@ export function PaletteButton() {
       onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE))}
       onPointerEnter={preloadPalette}
       onFocus={preloadPalette}
-      className="js-only hidden min-h-10 items-center gap-2 rounded-full border border-line px-3 text-sm sm:inline-flex text-muted transition-colors hover:border-line-strong hover:text-text"
+      className="js-only hidden min-h-10 items-center gap-2 rounded-[var(--radius)] border border-line px-3 text-sm sm:inline-flex text-muted transition-colors hover:border-line-strong hover:text-text"
       aria-label="Open command palette"
       aria-keyshortcuts="Meta+K Control+K"
     >

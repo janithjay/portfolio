@@ -96,7 +96,7 @@ export default function Playground() {
                 <span className="sr-only">Custom accent colour</span>
                 <input
                   type="color"
-                  value={tokens.accent.length === 7 ? tokens.accent.toLowerCase() : "#3dffa2"}
+                  value={tokens.accent.length === 7 ? tokens.accent.toLowerCase() : "#c6f432"}
                   onChange={(e) => {
                     set("accent", e.target.value.toUpperCase());
                     setHexDraft(e.target.value.toUpperCase());
